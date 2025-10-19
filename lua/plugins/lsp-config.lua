@@ -26,10 +26,10 @@ return {
 			capabilities.textDocument.semanticTokens = {
 				dynamicRegistration = true,
 				tokenTypes = {
-					"namespace", "type", "class", "enum", "interface",
-					"struct", "typeParameter", "parameter", "variable", "property",
-					"enumMember", "event", "function", "method", "macro", "keyword",
-					"modifier", "comment", "string", "number", "regexp", "operator", "decorator"
+					"namespace", "type", "class", "enum", "interface", "struct",
+					"typeParameter", "parameter", "variable", "property", "enumMember",
+					"event", "function", "method", "macro", "keyword", "modifier",
+					"comment", "string", "number", "regexp", "operator", "decorator"
 				},
 				tokenModifiers = {
 					"Module", "Block", "With", "shadowed", "error", "unused"
@@ -46,11 +46,7 @@ return {
 				serverCancellationSupport = true,
 				augmentsSyntaxTokens = true
 			}
-			-- Register custom wl_lsp
-			-- vim.lsp.config.wl_lsp = require('lsp.wl_lsp')
-
 			require("mason-lspconfig").setup({
-				-- ensure_installed = { "wl_lsp" },
 				automatic_installation = true,
 				handlers = {
 					function(name)
@@ -58,15 +54,6 @@ return {
 							capabilities = capabilities,
 						}
 						vim.lsp.enable(name)
-					end,
-					['wl_lsp'] = function()
-						vim.lsp.config.wl_lsp = {
-							capabilities = capabilities,
-							-- Uncomment and adjust if needed:
-							-- cmd = { "wl_lsp" },
-							-- filetypes = { "wl", "wolfram" },
-						}
-						vim.lsp.enable('wl_lsp')
 					end,
 					['lua_ls'] = function()
 						vim.lsp.config.lua_ls = {

@@ -14,4 +14,7 @@ return {
 			},
 		},
 	},
+	config = function(opts)
+		require"obsidian".setup(opts)
+	end
 }

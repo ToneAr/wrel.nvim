@@ -1,6 +1,16 @@
 vim.g.leader = " "
 
 -- Editor
+vim.keymap.set("v",                       -- Copy to Clipboard
+	"<C-c>",
+	"\"+y",
+	{ noremap = true, silent = true }
+)
+vim.keymap.set("v",                       -- Copy to Clipboard
+	"<C-x>",
+	"\"+d",
+	{ noremap = true, silent = true }
+)
 vim.keymap.set({"n", "i", "v"},           -- Save file
 	"<C-s>",
 	function() vim.cmd("w") end,
@@ -20,26 +30,63 @@ vim.keymap.set({"n", "i", "v"},           -- Force Quit Nvim
 	function () vim.cmd("qa!") end,
 	{ noremap = true, silent = true }
 )
-vim.keymap.set("n", "<leader>h",          -- Horizontal Split
+vim.keymap.set("n",
+	"<leader>h",          -- Horizontal Split
 	function() vim.cmd("split") end
 )
-vim.keymap.set("n", "<leader>l",          -- Vertical Split
+vim.keymap.set("n",       -- Vertical Split
+	"<leader>l",
 	function() vim.cmd("vsplit") end
 )
-vim.keymap.set("n", "<leader><BS>",
+vim.keymap.set("n",
+	"<leader><BS>",
 	function() vim.cmd("noh") end
 )
-vim.keymap.set("n", "<leader>.",          -- Code Actions
+vim.keymap.set("n",       -- Code Actions
+	"<leader>.",
 	function() vim.lsp.buf.code_action() end
 )
+vim.keymap.set("n",
+	"<C-BS>",
+	"daw",
+	{ noremap = true, silent = true }
+)
+vim.keymap.set("n",
+	"<M-BS>",
+	"caw",
+	{ noremap = true, silent = true }
+)
 
-vim.keymap.set({ 'n', 't' },              -- Docker
+-- Tab Bar
+local opts = { noremap = true, silent = true }
+
+vim.keymap.set('n', '<A-p>', '<Cmd>BufferPin<CR>', opts)
+
+vim.keymap.set('n', '<A-h>', '<Cmd>BufferPrevious<CR>', opts)
+vim.keymap.set('n', '<A-l>', '<Cmd>BufferNext<CR>', opts)
+
+vim.keymap.set('n', '<A-k>', '<Cmd>BufferMovePrevious<CR>', opts)
+vim.keymap.set('n', '<A-j>', '<Cmd>BufferMoveNext<CR>', opts)
+
+vim.keymap.set('n', '<A-1>', '<Cmd>BufferGoto 1<CR>', opts)
+vim.keymap.set('n', '<A-2>', '<Cmd>BufferGoto 2<CR>', opts)
+vim.keymap.set('n', '<A-3>', '<Cmd>BufferGoto 3<CR>', opts)
+vim.keymap.set('n', '<A-4>', '<Cmd>BufferGoto 4<CR>', opts)
+vim.keymap.set('n', '<A-5>', '<Cmd>BufferGoto 5<CR>', opts)
+vim.keymap.set('n', '<A-6>', '<Cmd>BufferGoto 6<CR>', opts)
+vim.keymap.set('n', '<A-7>', '<Cmd>BufferGoto 7<CR>', opts)
+vim.keymap.set('n', '<A-8>', '<Cmd>BufferGoto 8<CR>', opts)
+vim.keymap.set('n', '<A-9>', '<Cmd>BufferGoto 9<CR>', opts)
+vim.keymap.set('n', '<A-0>', '<Cmd>BufferLast<CR>', opts)
+
+
+-- Docker
+vim.keymap.set({ 'n', 't' },
 	'<leader>ld',
 	'<Cmd>lua LazyDocker.toggle()<CR>'
 )
 
-
--- File Navigation
+-- Telescope
 local tscopeBuiltin = require'telescope.builtin'
 local telescope = require('telescope')
 vim.keymap.set({"n", "i", "v"}, "<C-e>", tscopeBuiltin.find_files , { noremap = true, silent = true })
@@ -50,26 +97,13 @@ vim.keymap.set({"n", "i", "v"}, "<C-h>", tscopeBuiltin.help_tags , { noremap = t
 vim.keymap.set("n", "<C-p>", function() telescope.extensions.project.project{} end, { noremap = true, silent = true })
 
 -- File Explorer
-vim.keymap.set("n", "<C-M-B>", ":Oil<CR>")
-local neotree = require"neo-tree.command"
-vim.keymap.set("n", "<C-b>",
-	function()
-		neotree.execute({
-			toggle = true,
-			dir = vim.loop.cwd()
-		})
-	end,
-	{ noremap = true, silent = true }
-)
+vim.keymap.set("n", "<C-b>", ":Oil<CR>")
 
-
--- Copilot
--- local copilotChat = require("CopilotChat")
--- vim.keymap.set("n", "<C-i>", copilotChat.toggle)
+-- AI Chat
 vim.keymap.set("n", "<leader>i", ":CodeCompanionActions<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-i>", ":CodeCompanion<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-M-I>", ":CodeCompanionChat Toggle<CR>", { noremap = true, silent = true })
 vim.keymap.set("v", "<C-i>", ":'<,'>CodeCompanion<CR>", { noremap = true, silent = true })
 
--- Code Formatting
+-- Prettier
 vim.keymap.set("n", "<leader>kf", ":Prettier<CR>", { remap = true, silent = true })

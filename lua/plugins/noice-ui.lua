@@ -4,7 +4,6 @@ return {
 		event = "VeryLazy",
 		opts = {
 			lsp = {
-				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
 				override = {
 					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
 					["vim.lsp.util.stylize_markdown"] = true,
@@ -22,7 +21,7 @@ return {
 				filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
 				lua = { pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" }, icon = "", lang = "lua" },
 				help = { pattern = "^:%s*he?l?p?%s+", icon = "" },
-				input = { view = "cmdline_input", icon = "󰥻 " }, -- Used by input()
+				input = { view = "cmdline_input", icon = "󰥻 " },
 			},
 			},
 		},
@@ -31,6 +30,7 @@ return {
 			{
 				"rcarriga/nvim-notify",
 				opts = {
+					level = 'warn',
 					background_color = "#000000"
 				}
 				-- branch = "fix/fix_index_value",

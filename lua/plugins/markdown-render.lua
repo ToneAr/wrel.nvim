@@ -12,17 +12,25 @@ return {
 		dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },
 		ft = { "markdown", "codecompanion" },
 		opts = {
-			render_modes = true,
+			render_modes = {"n"},
+			pipe_table = { preset = 'round' },
 			sign = {
 				enabled = true,
 			},
 			heading = {
-				icons = { '󰲡 ', '󰲣 ', '󰲥 ', '󰲧 ', '󰲩 ', '󰲫 ' },
+				icons = { ' ', '> ', '>> ', '>>> ', '>>>> ', '>>>>> ' },
+				signs = { '󰲡 ', '󰲣 ', '󰲥 ', '󰲧 ', '󰲩 ', '󰲫 ' },
 				-- border = true,
 				border_virtual = true,
 			},
 			code = {
-				language_pad = 1
+				language_border = ' ',
+				language_left = '',
+				language_right = '',
+				language_pad = 0,
+				width = 'block',
+				right_pad = 2,
+				left_pad = 0
 			}
 		},
 	},
