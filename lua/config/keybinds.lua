@@ -50,17 +50,17 @@ vim.keymap.set({"n", "i", "v"}, "<C-h>", tscopeBuiltin.help_tags , { noremap = t
 vim.keymap.set("n", "<C-p>", function() telescope.extensions.project.project{} end, { noremap = true, silent = true })
 
 -- File Explorer
-vim.keymap.set("n", "<C-b>", ":Oil<CR>")
--- local neotree = require"neo-tree.command"
--- vim.keymap.set("n", "<C-b>",
--- 	function()
--- 		neotree.execute({
--- 			toggle = true,
--- 			dir = vim.loop.cwd()
--- 		})
--- 	end,
--- 	{ noremap = true, silent = true }
--- )
+vim.keymap.set("n", "<C-M-B>", ":Oil<CR>")
+local neotree = require"neo-tree.command"
+vim.keymap.set("n", "<C-b>",
+	function()
+		neotree.execute({
+			toggle = true,
+			dir = vim.loop.cwd()
+		})
+	end,
+	{ noremap = true, silent = true }
+)
 
 
 -- Copilot

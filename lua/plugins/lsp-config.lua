@@ -20,30 +20,7 @@ return {
 			"neovim/nvim-lspconfig",
 		},
 		config = function()
-			require("mason-lspconfig").setup({
-				ensure_installed = {},
-				automatic_installation = true,
-			})
-		end
-	},
-	{
-		"folke/lazydev.nvim",
-		ft = "lua",
-		opts = {
-			library = {
-				{ path = "luvit-meta/library", words = { "vim%.uv" } },
-			},
-		},
-	},
-	{
-		"neovim/nvim-lspconfig",
-		dependencies = {
-			"saghen/blink.cmp",
-			"folke/lazydev.nvim"
-		},
-		config = function()
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
-
 			-- Enhance capabilities with semantic tokens support
 			capabilities.textDocument = capabilities.textDocument or {}
 			capabilities.textDocument.semanticTokens = {
@@ -69,78 +46,52 @@ return {
 				serverCancellationSupport = true,
 				augmentsSyntaxTokens = true
 			}
+			-- Register custom wl_lsp
+			-- vim.lsp.config.wl_lsp = require('lsp.wl_lsp')
 
-			local lspconfig = require("lspconfig")
-
-			-- Standard servers
-			local servers = { "ts_ls", "eslint" }
-
-			-- Wolfram Language LSP setup
-			local configs = require("lspconfig.configs")
-			if not configs.wl_lsp then
-				configs.wl_lsp = {
-					default_config = {
-						name = "wl_lsp",
-						cmd = {
-							"wolframscript",
-							"-noinit",
-							"-noprompt",
-							"-nopaclet",
-							"-noicon",
-							"-nostartuppaclets",
-							"-run",
-							"'Needs[\"LSPServer`\"];LSPServer`StartServer[]'"
-						},
-						filetypes = { "wl", "wolfram" },
-						root_dir = function(fname)
-							-- Try multiple patterns to find project root
-							local util = require("lspconfig.util")
-							return util.root_pattern(
-								-- Wolfram Language paclet
-								"PacletInfo.wl",
-								-- ".git",
-								-- Any Wolfram Language files
-								"*.wl", "*.wls", "*.wlt", "*.cdf",
-								"*.nb", "*.tr", "*.m", "*.mt"
-							)(fname) or vim.fs.dirname(fname)
-						end,
-						single_file_support = true,
-					}
-				}
-			end
-
-			-- Setup the Wolfram Language LSP with enhanced semantic tokens support
-			lspconfig.wl_lsp.setup({
-				capabilities = capabilities,
-				flags = {
-					debounce_text_changes = 150,
-				},
-				-- on_attach = function(client, bufnr)
-				-- 	-- Ensure LSP starts when opening wolfram files in a project
-				-- 	if client.name == "wl_lsp" then
-				-- 		vim.notify("Wolfram Language LSP attached to buffer " .. bufnr, vim.log.levels.INFO)
-				-- 	end
-				-- end,
-			})
-
-			-- Setup all other servers
-			for _, lsp in ipairs(servers) do
-				lspconfig[lsp].setup({
-					capabilities = capabilities,
-				})
-			end
-
-			-- Special config for lua_ls
-			lspconfig.lua_ls.setup({
-				capabilities = capabilities,
-				settings = {
-					Lua = {
-						diagnostics = {
-							globals = { "vim" }
+			require("mason-lspconfig").setup({
+				-- ensure_installed = { "wl_lsp" },
+				automatic_installation = true,
+				handlers = {
+					function(name)
+						vim.lsp.config[name] = {
+							capabilities = capabilities,
 						}
-					}
+						vim.lsp.enable(name)
+					end,
+					['wl_lsp'] = function()
+						vim.lsp.config.wl_lsp = {
+							capabilities = capabilities,
+							-- Uncomment and adjust if needed:
+							-- cmd = { "wl_lsp" },
+							-- filetypes = { "wl", "wolfram" },
+						}
+						vim.lsp.enable('wl_lsp')
+					end,
+					['lua_ls'] = function()
+						vim.lsp.config.lua_ls = {
+							capabilities = capabilities,
+							settings = {
+								Lua = {
+									diagnostics = {
+										globals = { "vim" }
+									}
+								}
+							}
+						}
+						vim.lsp.enable('lua_ls')
+					end
 				}
 			})
 		end
-	}
+	},
+	{
+		"folke/lazydev.nvim",
+		ft = "lua",
+		opts = {
+			library = {
+				{ path = "luvit-meta/library", words = { "vim%.uv" } },
+			},
+		},
+	},
 }
