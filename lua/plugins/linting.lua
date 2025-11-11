@@ -2,6 +2,13 @@ return {
 	{
 		"MunifTanjim/prettier.nvim",
 		ft = { "javascript", "typescript", "css", "scss", "less", "vue", "json", "yaml", "markdown", "html" },
+		opts = {
+			cli_options = {
+				end_of_line = "lf",
+				single_quote = true,
+				use_tabs = true,
+			}
+		},
 		config = function()
 			vim.g["prettier#config#autoformat_config_present"] = 1
 			vim.g["prettier#config#autofromat_require_pragma"] = 0

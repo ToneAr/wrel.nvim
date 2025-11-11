@@ -1,7 +1,9 @@
 return {
 	{
 		'nvim-lualine/lualine.nvim',
-		dependencies = { 'nvim-tree/nvim-web-devicons' },
+		dependencies = {
+			'nvim-tree/nvim-web-devicons',
+		},
 		config = function()
 			local colors = {
 				blue   = '#80a0ff',
@@ -41,7 +43,7 @@ return {
 					lualine_c = {
 						'%=', --[[ add your center components here in place of this comment ]]
 					},
-					lualine_x = {},
+					lualine_x = { { function() return require("istrupin.companion_lualine") end } },
 					lualine_y = { 'filetype', 'progress' },
 					lualine_z = {
 						{ 'location', separator = { right = '' }, left_padding = 2 },
