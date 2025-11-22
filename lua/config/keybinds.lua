@@ -31,6 +31,11 @@ vim.keymap.set({"n", "i", "v"},           -- Force Quit Nvim
 	{ noremap = true, silent = true }
 )
 vim.keymap.set("n",
+	"<leader>d",
+	":bd<CR>",
+	{ noremap = true, silent = true }
+)
+vim.keymap.set("n",
 	"<leader>h",          -- Horizontal Split
 	function() vim.cmd("split") end
 )
@@ -55,6 +60,11 @@ vim.keymap.set("n",
 	"<M-BS>",
 	"caw",
 	{ noremap = true, silent = true }
+)
+vim.keymap.set("n",
+	"<C-S-f>",
+	":%s@@@g",
+	{ noremap = true }
 )
 
 -- Tab Bar
