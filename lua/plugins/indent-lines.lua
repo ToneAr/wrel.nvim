@@ -17,6 +17,13 @@ return {
 			indent = {
 				char = "▎",
 				tab_char = "▎",
+				highlight = "IblIndent",
+			},
+			whitespace = {
+				highlight = "IblWhitespace",
+			},
+			scope = {
+				enabled = false,
 			}
 		},
 		config = function (_, opts)

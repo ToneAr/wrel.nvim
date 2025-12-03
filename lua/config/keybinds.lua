@@ -117,3 +117,16 @@ vim.keymap.set("v", "<C-i>", ":'<,'>CodeCompanion<CR>", { noremap = true, silent
 
 -- Prettier
 vim.keymap.set("n", "<leader>kf", ":Prettier<CR>", { remap = true, silent = true })
+
+-- Theme Switcher
+local theme_switcher = require("config.theme-switcher")
+vim.keymap.set("n", "<leader>th", theme_switcher.pick_theme, { noremap = true, silent = true, desc = "Pick theme" })
+vim.keymap.set("n", "<leader>tn", theme_switcher.next_theme, { noremap = true, silent = true, desc = "Next theme" })
+vim.keymap.set("n", "<leader>tp", theme_switcher.prev_theme, { noremap = true, silent = true, desc = "Previous theme" })
+vim.keymap.set("n", "<leader>tr", function()
+	if vim.g.colors_name == "system-accent" then
+		require("config.system-theme").refresh()
+	else
+		vim.notify("System accent refresh only works with System Accent theme", vim.log.levels.WARN)
+	end
+end, { noremap = true, silent = true, desc = "Refresh system accent" })

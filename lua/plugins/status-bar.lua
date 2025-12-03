@@ -6,42 +6,50 @@ return {
 			'franco-ruggeri/codecompanion-lualine.nvim'
 		},
 		config = function()
-			local colors = {
-				blue   = '#206528',
-				cyan   = '#27778c',
-				black  = '#080808',
-				white  = '#c6c6c6',
-				red    = '#a6174f',
-				violet = '#88399e',
-				grey   = '#303030',
-				bg = '#355a4e',
-			}
+			-- Use shared color utilities for complementary colors
+			local color_utils = require('config.color-utils')
+
+			-- Create solid color theme
+			local function create_solid_theme()
+				local accent = color_utils.get_accent_color()
+				local fg = color_utils.get_fg_color()
+				
+				-- Generate complementary colors from the accent
+				local colors = color_utils.generate_complementary_colors(accent)
+				
+				-- Create semi-transparent backgrounds for statusline
+				local status_bg = color_utils.adjust_opacity(accent, 0.5, "#1a1a1a")
+				local status_bg_inactive = color_utils.adjust_opacity(accent, 0.25, "#151515")
+
+				return {
+					normal = {
+						a = { fg = fg, bg = status_bg },
+						b = { fg = fg, bg = status_bg },
+						c = { fg = fg, bg = status_bg },
+						x = { fg = fg, bg = status_bg },
+						y = { fg = fg, bg = status_bg, gui = 'bold' },
+						z = { fg = fg, bg = status_bg, gui = 'bold' },
+					},
+					insert = { z = { bg = colors.success, fg = fg } },
+					visual = { z = { bg = colors.info, fg = fg } },
+					replace = { z = { bg = colors.error, fg = fg } },
+					terminal = { z = { bg = colors.info, fg = fg } },
+					command = { z = { bg = colors.warning, fg = fg } },
+					inactive = {
+						a = { fg = colors.fg_inactive, bg = status_bg_inactive },
+						b = { fg = colors.fg_inactive, bg = status_bg_inactive },
+						c = { fg = colors.fg_inactive, bg = status_bg_inactive },
+						x = { fg = colors.fg_inactive, bg = status_bg_inactive },
+						y = { fg = colors.fg_inactive, bg = status_bg_inactive },
+						z = { fg = colors.fg_inactive, bg = status_bg_inactive },
+					},
+				}
+			 end
+
 			require('lualine').setup({
 				options = {
 					icons_enabled = true,
-					theme = {
-						normal = {
-							a = { fg = colors.white, bg = colors.bg },
-							b = { fg = colors.white, bg = colors.bg },
-							c = { fg = colors.white, bg = colors.bg },
-							x = { fg = colors.white, bg = colors.bg },
-							y = { fg = colors.white, bg = colors.bg, gui = 'bold' },
-							z = { fg = colors.white, bg = colors.bg, gui = 'bold' },
-						},
-						insert = { z = { bg = colors.blue } },
-						visual = { z = { bg = colors.cyan } },
-						replace = {z = { bg = colors.red } },
-						terminal = { z = { bg = colors.violet } },
-						command = { z = { bg = colors.violet } },
-						inactive = {
-							a = { fg = colors.white, bg = colors.grey },
-							b = { fg = colors.white, bg = colors.gray },
-							c = { fg = colors.white, bg = colors.gray },
-							x = { fg = colors.white, bg = colors.gray },
-							y = { fg = colors.white, bg = colors.gray },
-							z = { fg = colors.white, bg = colors.gray },
-						},
-					},
+					theme = create_solid_theme(),
 					-- use rounded bubble-type separators
 					component_separators = "",
 					section_separators = { left = '', right = '' },
@@ -50,8 +58,7 @@ return {
 					lualine_a = {
 						{
 							'branch',
-							icon = '',
-							color = { fg = colors.white, gui = 'bold' }
+							icon = '',
 						},
 						'filename',
 					},
@@ -68,12 +75,7 @@ return {
 						{
 							"diagnostics",
 							sources = { "nvim_diagnostic" },
-							symbols = { error = " ", warn = " ", info = " " },
-							diagnostics_color = {
-								color_error = { fg = colors.red },
-								color_warn = { fg = colors.yellow },
-								color_info = { fg = colors.cyan },
-							},
+							symbols = { error = " ", warn = " ", info = " " },
 						},
 						'codecompanion',
 					},
@@ -85,7 +87,6 @@ return {
 							'mode',
 							separator = { right = '' },
 							right_padding = 0,
-							color = { fg = colors.white, gui = 'bold' },
 						}
 					},
 				},
@@ -100,6 +101,14 @@ return {
 				tabline = {},
 				extensions = {}
 			})
+
+			-- Expose a function to refresh lualine theme
+			_G.refresh_lualine = function()
+				local lualine = require('lualine')
+				local config = lualine.get_config()
+				config.options.theme = create_solid_theme()
+				lualine.setup(config)
+			end
 		end
 	}
 }
