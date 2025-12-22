@@ -90,6 +90,12 @@ vim.keymap.set('n', '<A-9>', '<Cmd>BufferGoto 9<CR>', opts)
 vim.keymap.set('n', '<A-0>', '<Cmd>BufferLast<CR>', opts)
 
 
+-- Session Manager
+vim.keymap.set("n", "<leader>qs", function() require("persistence").load() end)
+vim.keymap.set("n", "<leader>qS", function() require("persistence").select() end)
+vim.keymap.set("n", "<leader>ql", function() require("persistence").load({ last = true }) end)
+vim.keymap.set("n", "<leader>qd", function() require("persistence").stop() end)
+
 -- Docker
 vim.keymap.set({ 'n', 't' },
 	'<leader>ld',
