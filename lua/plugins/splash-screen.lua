@@ -11,9 +11,9 @@ return {
 			local today = os.date("%a, %b %d, %Y")
 
 			local header_hl = {
-				{ { "AlphaHeader1_0", 0, -1 } }, -- Line 1: date
+				{ { "AlphaHeader_N_shadow", 0, -1 } }, -- Line 1: date
 				{ { "AlphaBorder", 0, -1 } },    -- Line 2: top border
-				{ -- Line 3: Start of logo
+				{ -- Start of logo
 					{ "AlphaBorder", 0, 48 },
 					{ "AlphaHeader_i_0", 48, 72 },
 					{ "AlphaBorder", 72, -1 }
@@ -82,7 +82,7 @@ return {
 					{ "AlphaHeader_m_4", 144, 194 },
 					{ "AlphaBorder", 194, -1 }
 				},
-				{
+				{ -- End of flogo
 					{ "AlphaBorder", 0, 1 },
 					{ "AlphaHeader_N_shadow", 1, 44 },
 					{ "AlphaHeader_e_shadow", 44, 74 },
@@ -92,14 +92,24 @@ return {
 					{ "AlphaHeader_m_shadow", 136, 194 },
 					{ "AlphaBorder", 194, -1 }
 				},
-				{ { "AlphaBorder", 0, -1 } },    -- Line 12: empty
-				{ { "AlphaBorder", 0, -1 } },    -- Line 13: bottom border
+				{ { "AlphaBorder", 0, -1 } }, -- Line 12: empty
+				{ { "AlphaBorder", 0, -1 } }, -- Line 13: bottom border
+				{ { "AlphaBorder", 0, -1 } }, -- Empty
+				{ { "AlphaBorder", 0, -1 } }, -- Empty
+				{ { "AlphaBorder", 0, 16 } }, -- New File
+				{ { "AlphaBorder", 0, -1 } }, -- Empty
+				{ { "AlphaBorder", 0, 16 } }, -- Find File
+				{ { "AlphaBorder", 0, -1 } }, -- Empty
+				{ { "AlphaBorder", 0, 16 } }, -- Recent Files
+				{ { "AlphaBorder", 0, -1 } }, -- Empty
+				{ { "AlphaBorder", 0, 16 } }, -- Recent Projects
+				{ { "AlphaBorder", 0, -1 } }, -- Empty
+				{ { "AlphaBorder", 0, 16 } }, -- Help Pages
+				{ { "AlphaBorder", 0, -1 } }, -- Empty
+				{ { "AlphaBorder", 0, 16 } }, -- Quit NVIM
 			}
-
-			dashboard.section.header.opts = {
-				position = "center",
-				hl = header_hl
-			}
+			dashboard.section.header.opts.position = "center"
+			dashboard.section.header.opts.hl = header_hl
 			dashboard.section.header.val = {
 				today,
 				[[╭───────────────────────────────────────────────────────────────────────╮]],
@@ -115,10 +125,7 @@ return {
 				[[│                                                                       │]],
 				[[╰───────────────────────────────────────────────────────────────────────╯]]
 			}
-			dashboard.section.footer.val = {
-				"Version: " .. vim.fn.system("cd ~/.config/nvim && git rev-parse --short HEAD"):gsub("\n", "")
-			}
-			dashboard.section.header.opts.position = "center"
+
 			dashboard.section.buttons.val = {
 				dashboard.button( "n", "  New file" , ":ene <BAR> startinsert <CR>"),
 				dashboard.button( "f", "  Find file" , ":Telescope find_files<CR>"),
@@ -126,6 +133,11 @@ return {
 				dashboard.button( "p", "  Recent projects", ":Telescope project<CR>"),
 				dashboard.button( "h", "  Help pages" , ":Telescope help_tags<CR>"),
 				dashboard.button( "q", "  Quit NVIM" , ":qa<CR>"),
+			}
+
+			dashboard.section.footer.opts.hl = "AlphaHeader_N_shadow"
+			dashboard.section.footer.val = {
+					"Version: " .. vim.fn.system("cd ~/.config/nvim && git rev-parse --short HEAD"):gsub("\n", "")
 			}
 			require("alpha").setup(
 				dashboard.config
