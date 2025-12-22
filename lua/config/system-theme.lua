@@ -282,6 +282,14 @@ function M.setup(opts)
 		bright_white = "#ffffff",
 	}
 
+	local logo_base_colors = {
+		N = colors.accent,
+		e = colors.accent_bright,
+		o = colors.accent_bright,
+		V = utils.rotate_hue(colors.accent, -30),
+		i = utils.rotate_hue(colors.accent_bright, -30),
+		m = utils.rotate_hue(colors.accent_bright, -30),
+	}
 
 	-- Define highlight groups
 	local highlights = {
@@ -304,6 +312,54 @@ function M.setup(opts)
 		Folded = { fg = colors.comment, bg = colors.selection },
 		FoldColumn = { fg = colors.border },
 		EndOfBuffer = { fg = colors.line_numbers },
+
+		AlphaBorder = { fg = colors.border },
+
+		AlphaHeader_N_0 = { fg = logo_base_colors.N },
+		AlphaHeader_N_1 = { fg = utils.adjust_lightness(logo_base_colors.N, 0.01) },
+		AlphaHeader_N_2 = { fg = utils.adjust_lightness(logo_base_colors.N, 0.02) },
+		AlphaHeader_N_3 = { fg = utils.adjust_lightness(logo_base_colors.N, 0.03) },
+		AlphaHeader_N_4 = { fg = utils.adjust_lightness(logo_base_colors.N, 0.04) },
+		AlphaHeader_N_5 = { fg = utils.adjust_lightness(logo_base_colors.N, 0.05) },
+		AlphaHeader_N_6 = { fg = utils.adjust_lightness(logo_base_colors.N, 0.06) },
+		AlphaHeader_N_shadow = { fg = utils.adjust_lightness(logo_base_colors.N, -0.3) },
+
+		AlphaHeader_e_0 = { fg = logo_base_colors.e },
+		AlphaHeader_e_1 = { fg = utils.adjust_lightness(logo_base_colors.e, 0.01) },
+		AlphaHeader_e_2 = { fg = utils.adjust_lightness(logo_base_colors.e, 0.02) },
+		AlphaHeader_e_3 = { fg = utils.adjust_lightness(logo_base_colors.e, 0.03) },
+		AlphaHeader_e_4 = { fg = utils.adjust_lightness(logo_base_colors.e, 0.04) },
+		AlphaHeader_e_shadow = { fg = utils.adjust_lightness(logo_base_colors.e, -0.3) },
+
+		AlphaHeader_o_0 = { fg = logo_base_colors.o },
+		AlphaHeader_o_1 = { fg = utils.adjust_lightness(logo_base_colors.o, 0.01) },
+		AlphaHeader_o_2 = { fg = utils.adjust_lightness(logo_base_colors.o, 0.02) },
+		AlphaHeader_o_3 = { fg = utils.adjust_lightness(logo_base_colors.o, 0.03) },
+		AlphaHeader_o_4 = { fg = utils.adjust_lightness(logo_base_colors.o, 0.04) },
+		AlphaHeader_o_shadow = { fg = utils.adjust_lightness(logo_base_colors.o, -0.3) },
+
+		AlphaHeader_V_0 = { fg = logo_base_colors.V },
+		AlphaHeader_V_1 = { fg = utils.adjust_lightness(logo_base_colors.V, 0.01) },
+		AlphaHeader_V_2 = { fg = utils.adjust_lightness(logo_base_colors.V, 0.02) },
+		AlphaHeader_V_3 = { fg = utils.adjust_lightness(logo_base_colors.V, 0.03) },
+		AlphaHeader_V_4 = { fg = utils.adjust_lightness(logo_base_colors.V, 0.04) },
+		AlphaHeader_V_5 = { fg = utils.adjust_lightness(logo_base_colors.V, 0.05) },
+		AlphaHeader_V_6 = { fg = utils.adjust_lightness(logo_base_colors.V, 0.06) },
+		AlphaHeader_V_shadow = { fg = utils.adjust_lightness(logo_base_colors.V, -0.3) },
+
+		AlphaHeader_i_0 = { fg = logo_base_colors.i },
+		AlphaHeader_i_1 = { fg = utils.adjust_lightness(logo_base_colors.i, 0.01) },
+		AlphaHeader_i_2 = { fg = utils.adjust_lightness(logo_base_colors.i, 0.02) },
+		AlphaHeader_i_3 = { fg = utils.adjust_lightness(logo_base_colors.i, 0.03) },
+		AlphaHeader_i_4 = { fg = utils.adjust_lightness(logo_base_colors.i, 0.04) },
+		AlphaHeader_i_shadow = { fg = utils.adjust_lightness(logo_base_colors.i, -0.3) },
+
+		AlphaHeader_m_0 = { fg = logo_base_colors.m },
+		AlphaHeader_m_1 = { fg = utils.adjust_lightness(logo_base_colors.m, 0.01) },
+		AlphaHeader_m_2 = { fg = utils.adjust_lightness(logo_base_colors.m, 0.02) },
+		AlphaHeader_m_3 = { fg = utils.adjust_lightness(logo_base_colors.m, 0.03) },
+		AlphaHeader_m_4 = { fg = utils.adjust_lightness(logo_base_colors.m, 0.04) },
+		AlphaHeader_m_shadow = { fg = utils.adjust_lightness(logo_base_colors.m, -0.3) },
 
 		-- Status and tab lines
 		StatusLine = { fg = colors.fg, bg = colors.status },
