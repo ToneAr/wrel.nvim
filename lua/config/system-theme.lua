@@ -117,17 +117,17 @@ local function generate_palette(base_accent)
 		menu_bg = "#1a1a1a",
 		selection = "#2d2d3d",
 		highlight = "#28283a",
-		fg = "#e8e8ec",              -- Brighter foreground
+		fg = "#e8e8ec",
 		fg_dark = "#b5b5bb",
-		comment = "#8a8a94",         -- Brighter comments
-		line_numbers = "#6a6a6a",   -- Brighter line numbers
+		comment = "#8a8a94",
+		line_numbers = "#6a6a6a",
 		active_line_nr = utils.adjust_lightness(accent, 0.1),
 
 		-- Functional colors derived from accent (vibrant!)
 		keyword = utils.adjust_lightness(accent, 0.05),
 		function_name = muted(utils.rotate_hue(accent, -35), 0, 0.1),
 		type_name = muted(utils.rotate_hue(accent, 35), 0, 0.1),
-		string = muted(utils.rotate_hue(accent, 65), -0.05, 0.08),
+		string = utils.adjust_lightness(utils.adjust_saturation(utils.rotate_hue(accent, -90), -0.2), 0.2),
 		number = muted(utils.rotate_hue(accent, 280), -0.05, 0.08),
 		constant = muted(utils.rotate_hue(accent, 280), 0, 0.1),
 		operator = muted(utils.rotate_hue(accent, -60), -0.1, 0.05),
@@ -141,9 +141,9 @@ local function generate_palette(base_accent)
 		success = "#88d888",
 
 		-- Bracket colors (vibrant gradient based on accent)
-		bracket1 = muted(utils.rotate_hue(accent, 0), 0, 0.08),
-		bracket2 = muted(utils.rotate_hue(accent, 25), 0, 0.08),
-		bracket3 = muted(utils.rotate_hue(accent, 50), 0, 0.08),
+		bracket1 = muted(utils.rotate_hue(accent, -75), 0, 0.08),
+		bracket2 = muted(utils.rotate_hue(accent, -25), 0, 0.08),
+		bracket3 = muted(utils.rotate_hue(accent, 0), 0, 0.08),
 		bracket4 = muted(utils.rotate_hue(accent, 75), 0, 0.08),
 		bracket5 = muted(utils.rotate_hue(accent, 100), 0, 0.08),
 		bracket6 = muted(utils.rotate_hue(accent, 125), 0, 0.08),
@@ -164,11 +164,11 @@ local function generate_palette(base_accent)
 		tabline_fill = "#1a1a1a",
 		tabline_sel = utils.adjust_lightness(accent, -0.1),
 
-		-- Wolfram Language specific colors (derived from accent)
-		wolfram_module = muted(utils.rotate_hue(accent, 100), 0, 0.1),
-		wolfram_block = muted(utils.rotate_hue(accent, -35), 0, 0.1),
-		wolfram_with = muted(utils.rotate_hue(accent, -35), 0, 0.1),
-		wolfram_builtin = utils.adjust_lightness(accent, 0.1),  -- Built-in functions use brightened accent
+		-- Wolfram Language specific colors (triadic/complementary with varied brightness)
+		wolfram_module = muted(utils.rotate_hue(accent, -110), 0, 0),
+		wolfram_block = muted(utils.rotate_hue(accent, -100), 0, 0.05),
+		wolfram_with = muted(utils.rotate_hue(accent, -125), 0, 0.1),
+		wolfram_builtin = utils.adjust_lightness(accent, 0.05),
 	}
 
 	return palette
@@ -262,25 +262,26 @@ function M.setup(opts)
 		end
 	})
 
-	-- Terminal colors (based on accent)
+	-- Terminal colors
 	local terminal_colors = {
-		black = "#333333",
-		bright_black = "#666666",
-		red = colors.error,
-		bright_red = utils.adjust_lightness(colors.accent, 0.1),
-		green = colors.triadic1,
-		bright_green = utils.adjust_lightness(colors.triadic1, 0.15),
-		yellow = colors.string,
-		bright_yellow = utils.adjust_lightness(colors.string, 0.15),
-		blue = colors.accent,
-		bright_blue = colors.accent_bright,
-		magenta = colors.number,
-		bright_magenta = utils.adjust_lightness(colors.number, 0.15),
-		cyan = colors.function_name,
-		bright_cyan = utils.adjust_lightness(colors.function_name, 0.15),
-		white = "#E3E3DD",
-		bright_white = "#F8F8F2",
+		black = "#0f1419",
+		bright_black = "#5c6570",
+		red = "#e06c75",
+		bright_red = "#ff7b72",
+		green = "#98c379",
+		bright_green = "#b6e3a1",
+		yellow = "#e5c07b",
+		bright_yellow = "#ffd580",
+		blue = "#61afef",
+		bright_blue = "#93d6ff",
+		magenta = "#c678dd",
+		bright_magenta = "#e3a3f5",
+		cyan = "#56b6c2",
+		bright_cyan = "#8fd8e8",
+		white = "#dcdfe4",
+		bright_white = "#ffffff",
 	}
+
 
 	-- Define highlight groups
 	local highlights = {
@@ -313,6 +314,14 @@ function M.setup(opts)
 		BufferTabpages = { bg = utils.adjust_opacity(colors.accent, 0.15, "#0f0f0f") },
 		BufferTabpageFill = { bg = utils.adjust_opacity(colors.accent, 0.15, "#0f0f0f") },
 		Title = { fg = colors.function_name, bold = true },
+
+		-- Brackets
+		RainbowDelimiterOne = { fg = colors.bracket1 },
+		RainbowDelimiterTwo = { fg = colors.bracket2 },
+		RainbowDelimiterThree = { fg = colors.bracket3 },
+		RainbowDelimiterFour = { fg = colors.bracket4 },
+		RainbowDelimiterFive = { fg = colors.bracket5 },
+		RainbowDelimiterSix = { fg = colors.bracket6 },
 
 		-- Search
 		IncSearch = { bg = colors.find_match, fg = colors.fg, bold = true },
@@ -620,19 +629,19 @@ function M.setup(opts)
 		["@lsp.mod.error.wolfram"] = { fg = colors.error },
 		["@lsp.mod.unused.wolfram"] = { fg = colors.comment, italic = true },
 		["@lsp.mod.declaration.wolfram"] = { fg = colors.function_name, italic = true },
-		["@lsp.type.type.wolfram"] = { fg = colors.type_name, italic = true },
+		["@lsp.type.type.wolfram"] = { fg = utils.rotate_hue(colors.type_name, 50), italic = true },
 		["@lsp.type.parameter.wolfram"] = { fg = colors.accent_bright, italic = true },
 		["@lsp.type.parameter.shadowed.wolfram"] = { fg = colors.warning, italic = true },
 		["@lsp.type.parameter.error.wolfram"] = { fg = colors.error },
 		["@lsp.type.parameter.unused.wolfram"] = { fg = colors.comment, italic = true },
 		["@lsp.typemod.type.error.wolfram"] = { fg = colors.comment, italic = true },
 
-		-- Wolfram built-in functions (these should use accent color)
-		["@lsp.type.function.wolfram"] = { fg = colors.wolfram_builtin },
-		["@lsp.type.method.wolfram"] = { fg = colors.wolfram_builtin },
-		["@lsp.mod.defaultLibrary.wolfram"] = { fg = colors.wolfram_builtin },
-		["@function.builtin.wolfram"] = { fg = colors.wolfram_builtin },
-		["@function.wolfram"] = { fg = colors.wolfram_builtin },
+		-- Wolfram built-in functions (use keyword/accent color for thematic cohesion)
+		["@lsp.type.function.wolfram"] = { fg = colors.keyword },
+		["@lsp.type.method.wolfram"] = { fg = colors.keyword },
+		["@lsp.mod.defaultLibrary.wolfram"] = { fg = colors.keyword },
+		["@function.builtin.wolfram"] = { fg = colors.keyword },
+		["@function.wolfram"] = { fg = colors.keyword },
 	}
 
 	-- Set terminal colors
@@ -684,7 +693,7 @@ end
 -- Start watching for system accent changes
 function M.start_watching()
 	-- Check every 5 seconds for accent color changes
-	local check_interval = 5000
+	local check_interval = 3000
 
 	local timer = vim.loop.new_timer()
 	if not timer then

@@ -2,7 +2,7 @@ return {
 	{ "lukas-reineke/virt-column.nvim",
 		opts = {
 			char = "│",
-			virtcolumn = "+1,120",
+			virtcolumn = "80,100",
 			exclude = {
 				filetypes = {
 					"alpha", "oil", "markdown", "codecompanion"

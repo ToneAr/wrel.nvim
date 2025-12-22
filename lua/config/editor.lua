@@ -5,7 +5,7 @@ vim.diagnostic.config({
 	virtual_text = true,
 })
 vim.opt.termguicolors = true
-vim.o.colorcolumn = '80,100'                 -- Highlight columns 80 and 100
+-- vim.o.colorcolumn = '80,100'                 -- Highlight columns 80 and 100
 
 vim.o.list = true                            -- Show whitespace characters
 vim.o.listchars = 'tab: ,lead:·,trail:·'    -- Whitespace character markers
