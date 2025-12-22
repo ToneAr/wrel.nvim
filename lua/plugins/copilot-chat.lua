@@ -7,6 +7,21 @@ return {
 			"ravitemer/mcphub.nvim"
 		},
 		opts = {
+			strategies = {
+				chat = {
+					adapter = {
+						name = "anthropic",
+						model = "claude-opus-4-5"
+					}
+				},
+				inline = {
+					adapter = {
+						name = "anthropic",
+						model = "claude-haiku-4-5",
+					}
+
+				}
+			},
 			extensions = {
 				mcphub = {
 					callback = "mcphub.extensions.codecompanion",
